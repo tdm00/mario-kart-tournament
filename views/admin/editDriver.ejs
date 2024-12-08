@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Driver</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Edit Driver: <%= driver.name %></h1>
+
+    <form action="/admin/editDriver/<%= driver.id %>" method="POST" class="w-50 mx-auto">
+      <div class="mb-3">
+        <label for="name" class="form-label">Driver Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          class="form-control" 
+          value="<%= driver.name %>" 
+          required>
+      </div>
+      <div class="mb-3">
+        <label for="ageRange" class="form-label">Age Range</label>
+        <select id="ageRange" name="ageRange" class="form-select" required>
+          <option value="5-8" <%= driver.age_range === '5-8' ? 'selected' : '' %>>5-8</option>
+          <option value="9-11" <%= driver.age_range === '9-11' ? 'selected' : '' %>>9-11</option>
+          <option value="12-15" <%= driver.age_range === '12-15' ? 'selected' : '' %>>12-15</option>
+          <option value="16-20" <%= driver.age_range === '16-20' ? 'selected' : '' %>>16-20</option>
+          <option value="21-25" <%= driver.age_range === '21-25' ? 'selected' : '' %>>21-25</option>
+          <option value="26+" <%= driver.age_range === '26+' ? 'selected' : '' %>>26+</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="skillLevel" class="form-label">Skill Level</label>
+        <select id="skillLevel" name="skillLevel" class="form-select" required>
+          <option value="Beginner" <%= driver.skill_level === 'Beginner' ? 'selected' : '' %>>Beginner</option>
+          <option value="Intermediate" <%= driver.skill_level === 'Intermediate' ? 'selected' : '' %>>Intermediate</option>
+          <option value="Advanced" <%= driver.skill_level === 'Advanced' ? 'selected' : '' %>>Advanced</option>
+          <option value="Expert" <%= driver.skill_level === 'Expert' ? 'selected' : '' %>>Expert</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Update Driver</button>
+    </form>
+  </div>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

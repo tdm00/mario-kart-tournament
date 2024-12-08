@@ -1,4 +1,4 @@
-const db = require('../db');
+const db = require('./db');
 
 // Add a new driver
 const addDriver = (name, ageRange, skillLevel, callback) => {
@@ -18,17 +18,23 @@ const getDrivers = (callback) => {
   });
 };
 
+// Get a driver by ID
+const getDriverById = (id, callback) => {
+  db.get(`SELECT * FROM drivers WHERE id = ?`, [id], (err, row) => {
+    callback(err, row);
+  });
+};
+
 // Update a driver's score
 const updateScore = (id, newScore, ageMultiplier, skillMultiplier, callback) => {
   db.get(`SELECT scores, total_score FROM drivers WHERE id = ?`, [id], (err, row) => {
     if (err) return callback(err);
+    if (!row) return callback(new Error(`Driver with ID ${id} not found`));
 
-    // Parse the existing scores
     const scores = JSON.parse(row.scores || '[]');
     const adjustedScore = newScore * ageMultiplier * skillMultiplier;
     scores.push(adjustedScore);
 
-    // Update the scores and total
     const totalScore = scores.reduce((a, b) => a + b, 0);
     db.run(
       `UPDATE drivers SET scores = ?, total_score = ? WHERE id = ?`,
@@ -41,5 +47,6 @@ const updateScore = (id, newScore, ageMultiplier, skillMultiplier, callback) => 
 module.exports = {
   addDriver,
   getDrivers,
+  getDriverById,
   updateScore,
 };

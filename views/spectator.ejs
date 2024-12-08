@@ -1,22 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard</title>
+
+  <!-- Auto-refresh every 10 seconds -->
   <meta http-equiv="refresh" content="10">
-  <title>Mario Kart Scores</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+
+  <!-- Custom CSS (Optional) -->
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex: 1;
+    }
+    footer {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+    }
+  </style>
 </head>
 <body>
-  <h1>Mario Kart Tournament Scores</h1>
-  <table>
-    <tr>
-      <th>Driver</th>
-      <th>Total Score</th>
-    </tr>
-    <% drivers.forEach(driver => { %>
-    <tr>
-      <td><%= driver.name %></td>
-      <td><%= driver.totalScore %></td>
-    </tr>
-    <% }) %>
-  </table>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">Mario Kart Tournament</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mt-5">
+    <h1 class="text-center mb-4">Leaderboard</h1>
+
+    <!-- Drivers Table -->
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Total Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (drivers.length > 0) { %>
+          <% drivers.forEach((driver, index) => { %>
+            <tr>
+              <td><%= index + 1 %></td> <!-- Rank -->
+              <td><%= driver.name %></td>
+              <td><%= driver.total_score %></td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="3" class="text-center">No drivers found</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Mario Kart Tournament</p>
+  </footer>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

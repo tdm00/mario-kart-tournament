@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -14,18 +14,15 @@ const spectatorRoutes = require('./routes/spectator');
 const app = express();
 
 // Middleware setup
-app.use(bodyParser.urlencoded({ extended: false })); // Parse form data
-app.use(bodyParser.json()); // Parse JSON
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
-
-// Set up EJS as the templating engine
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Session and flash messaging
 app.use(
   session({
-    secret: 'mario-kart-secret', // Replace with a strong secret in production
+    secret: 'mario-kart-secret',
     resave: false,
     saveUninitialized: false,
   })
@@ -33,13 +30,13 @@ app.use(
 app.use(flash());
 
 // Passport authentication setup
-require('./config/passport')(passport); // Load Passport configuration
+require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use('/admin', adminRoutes); // Admin routes
-app.use('/', spectatorRoutes); // Spectator routes
+app.use('/admin', adminRoutes);
+app.use('/', spectatorRoutes);
 
 // Error handling
 app.use((req, res) => {
@@ -48,6 +45,4 @@ app.use((req, res) => {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

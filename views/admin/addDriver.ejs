@@ -2,36 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Driver</title>
-  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-  <h1>Add Driver</h1>
-  <form action="/admin/addDriver" method="POST">
-    <label for="name">Driver Name:</label>
-    <input type="text" id="name" name="name" required>
-    
-    <label for="ageRange">Age Range:</label>
-    <select id="ageRange" name="ageRange" required>
-      <option value="5-8">5-8</option>
-      <option value="9-11">9-11</option>
-      <option value="12-15">12-15</option>
-      <option value="16-20">16-20</option>
-      <option value="21-25">21-25</option>
-      <option value="26+">26+</option>
-    </select>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Add Driver</h1>
 
-    <label for="skillLevel">Skill Level:</label>
-    <select id="skillLevel" name="skillLevel" required>
-      <option value="Beginner">Beginner</option>
-      <option value="Intermediate">Intermediate</option>
-      <option value="Advanced">Advanced</option>
-      <option value="Expert">Expert</option>
-    </select>
+    <form action="/admin/addDriver" method="POST" class="w-50 mx-auto">
+      <div class="mb-3">
+        <label for="name" class="form-label">Driver Name</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="ageRange" class="form-label">Age Range</label>
+        <select id="ageRange" name="ageRange" class="form-select" required>
+          <option value="5-8">5-8</option>
+          <option value="9-11">9-11</option>
+          <option value="12-15">12-15</option>
+          <option value="16-20">16-20</option>
+          <option value="21-25">21-25</option>
+          <option value="26+">26+</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="skillLevel" class="form-label">Skill Level</label>
+        <select id="skillLevel" name="skillLevel" class="form-select" required>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+          <option value="Expert">Expert</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Add Driver</button>
+    </form>
+  </div>
 
-    <button type="submit">Add Driver</button>
-  </form>
-
-  <a href="/admin/dashboard">Back to Dashboard</a>
+  <!-- Bootstrap JavaScript -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

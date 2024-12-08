@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "copyfiles -u 2 node_modules/bootstrap/dist/**/* public/bootstrap/"
   },
   "keywords": [],
   "author": "Troy Murray (troy.murray@gmail.com)",
@@ -12,6 +13,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
+    "bootstrap": "^5.3.3",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "chai": "^5.1.2",
+    "copyfiles": "^2.4.1",
     "cucumber": "^6.0.7",
     "mocha": "^11.0.1",
     "puppeteer": "^23.10.1"

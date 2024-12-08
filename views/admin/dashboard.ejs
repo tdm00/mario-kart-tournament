@@ -2,36 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Admin Dashboard</h1>
+    <a href="/admin/addDriver" class="btn btn-success mb-4">Add New Driver</a>
 
-  <h2>Drivers</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Age Range</th>
-        <th>Skill Level</th>
-        <th>Total Score</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% drivers.forEach(driver => { %>
-      <tr>
-        <td><%= driver.name %></td>
-        <td><%= driver.ageRange %></td>
-        <td><%= driver.skillLevel %></td>
-        <td><%= driver.totalScore %></td>
-      </tr>
-      <% }) %>
-    </tbody>
-  </table>
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Age Range</th>
+          <th>Skill Level</th>
+          <th>Total Score</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (drivers.length > 0) { %>
+          <% drivers.forEach(driver => { %>
+            <tr>
+              <td><%= driver.name %></td>
+              <td><%= driver.age_range %></td>
+              <td><%= driver.skill_level %></td>
+              <td><%= driver.total_score %></td>
+              <td>
+                <a href="/admin/editScore/<%= driver.id %>" class="btn btn-warning btn-sm">Edit Score</a>
+                <a href="/admin/editDriver/<%= driver.id %>" class="btn btn-info btn-sm">Edit Driver</a>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="5" class="text-center">No drivers found</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 
-  <a href="/admin/addDriver">Add Driver</a>
-  <a href="/admin/enterScore">Enter Scores</a>
-  <a href="/admin/logout">Logout</a>
+  <!-- Bootstrap JavaScript -->
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
