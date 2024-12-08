@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const db = require('../models/db'); // Import the database
 const { addDriver, getDrivers, getDriverById, updateScore } = require('../models/Driver');
 
 // Default route for /admin
@@ -83,30 +84,41 @@ router.post('/editDriver/:id', isAuthenticated, (req, res) => {
   );
 });
 
-// Render Edit Score page
-router.get('/editScore/:id', isAuthenticated, (req, res) => {
-  getDriverById(req.params.id, (err, driver) => {
+// Render Enter Score page
+router.get('/enterScore', isAuthenticated, (req, res) => {
+  getDrivers((err, drivers) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error fetching drivers');
+    }
+    res.render('admin/enterScore', { drivers });
+  });
+});
+
+// Handle Enter Score submission
+router.post('/enterScore', isAuthenticated, (req, res) => {
+  const { driverId, score } = req.body;
+
+  if (!driverId || !score) {
+    return res.status(400).send('Driver ID and score are required');
+  }
+
+  getDriverById(driverId, (err, driver) => {
     if (err || !driver) {
       console.error(err);
       return res.status(404).send('Driver not found');
     }
-    res.render('admin/editScore', { driver });
-  });
-});
 
-// Handle Edit Score submission
-router.post('/editScore/:id', isAuthenticated, (req, res) => {
-  const { score } = req.body;
+    const ageMultiplier = getAgeMultiplier(driver.age_range);
+    const skillMultiplier = getSkillMultiplier(driver.skill_level);
 
-  const ageMultiplier = getAgeMultiplier(req.body.ageRange || '26+');
-  const skillMultiplier = getSkillMultiplier(req.body.skillLevel || 'Expert');
-
-  updateScore(req.params.id, score, ageMultiplier, skillMultiplier, (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Error updating score');
-    }
-    res.redirect('/admin/dashboard');
+    updateScore(driverId, score, ageMultiplier, skillMultiplier, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error updating score');
+      }
+      res.redirect('/admin/dashboard');
+    });
   });
 });
 
@@ -121,22 +133,43 @@ router.get('/logout', (req, res) => {
   });
 });
 
+router.get('/editScore/:id', isAuthenticated, (req, res) => {
+  getDriverById(req.params.id, (err, driver) => {
+    if (err || !driver) {
+      console.error(err || 'Driver not found');
+      return res.status(404).send('Driver not found');
+    }
+    res.render('admin/editScore', { driver });
+  });
+});
+
+router.post('/editScore/:id', isAuthenticated, (req, res) => {
+  const { id } = req.params;
+  const { totalScore } = req.body;
+
+  if (!totalScore || isNaN(totalScore)) {
+    return res.status(400).send('Invalid total score');
+  }
+
+  db.run(
+    `UPDATE drivers SET total_score = ? WHERE id = ?`,
+    [parseFloat(totalScore), id],
+    (err) => {
+      if (err) {
+        console.error('Error updating score:', err);
+        return res.status(500).send('Error updating score');
+      }
+      res.redirect('/admin/dashboard');
+    }
+  );
+});
+
 // Middleware to check authentication
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   res.redirect('/admin/login');
-}
-
-function getAgeMultiplier(ageRange) {
-  const multipliers = { '5-8': 1.5, '9-11': 1.4, '12-15': 1.3, '16-20': 1.2, '21-25': 1.1, '26+': 1.0 };
-  return multipliers[ageRange] || 1.0;
-}
-
-function getSkillMultiplier(skillLevel) {
-  const multipliers = { Beginner: 1.3, Intermediate: 1.2, Advanced: 1.1, Expert: 1.0 };
-  return multipliers[skillLevel] || 1.0;
 }
 
 module.exports = router;
