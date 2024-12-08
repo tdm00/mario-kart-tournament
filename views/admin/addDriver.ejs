@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Driver</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Add Driver</h1>
+  <form action="/admin/addDriver" method="POST">
+    <label for="name">Driver Name:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="ageRange">Age Range:</label>
+    <select id="ageRange" name="ageRange" required>
+      <option value="5-8">5-8</option>
+      <option value="9-11">9-11</option>
+      <option value="12-15">12-15</option>
+      <option value="16-20">16-20</option>
+      <option value="21-25">21-25</option>
+      <option value="26+">26+</option>
+    </select>
+
+    <label for="skillLevel">Skill Level:</label>
+    <select id="skillLevel" name="skillLevel" required>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+      <option value="Expert">Expert</option>
+    </select>
+
+    <button type="submit">Add Driver</button>
+  </form>
+
+  <a href="/admin/dashboard">Back to Dashboard</a>
+</body>
+</html>

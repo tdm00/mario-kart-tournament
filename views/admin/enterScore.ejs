@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enter Scores</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Enter Scores</h1>
+  <form action="/admin/enterScore" method="POST">
+    <label for="driverId">Select Driver:</label>
+    <select id="driverId" name="driverId" required>
+      <% drivers.forEach(driver => { %>
+        <option value="<%= driver._id %>"><%= driver.name %> (Score: <%= driver.totalScore %>)</option>
+      <% }) %>
+    </select>
+
+    <label for="score">Score to Add:</label>
+    <input type="number" id="score" name="score" required>
+
+    <button type="submit">Update Score</button>
+  </form>
+
+  <a href="/admin/dashboard">Back to Dashboard</a>
+</body>
+</html>

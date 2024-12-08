@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="refresh" content="10">
+  <title>Mario Kart Scores</title>
+</head>
+<body>
+  <h1>Mario Kart Tournament Scores</h1>
+  <table>
+    <tr>
+      <th>Driver</th>
+      <th>Total Score</th>
+    </tr>
+    <% drivers.forEach(driver => { %>
+    <tr>
+      <td><%= driver.name %></td>
+      <td><%= driver.totalScore %></td>
+    </tr>
+    <% }) %>
+  </table>
+</body>
+</html>
