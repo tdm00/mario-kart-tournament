@@ -1,4 +1,14 @@
+// Load environment variables
 require('dotenv').config();
+
+// Validate critical environment variables
+if (!process.env.ADMIN_PASSWORD) {
+  console.error('ERROR: ADMIN_PASSWORD environment variable is not set.');
+  process.exit(1); // Stop the application
+}
+
+
+// Import required modules
 const express = require('express');
 const path = require('path');
 const session = require('express-session');

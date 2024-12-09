@@ -5,7 +5,7 @@ module.exports = (passport) => {
     new LocalStrategy((username, password, done) => {
       // Hardcoded credentials for simplicity
       const adminUsername = 'admin';
-      const adminPassword = 'letmein';
+      const adminPassword = process.env.ADMIN_PASSWORD;
 
       if (username !== adminUsername) {
         return done(null, false, { message: 'Incorrect username' });
