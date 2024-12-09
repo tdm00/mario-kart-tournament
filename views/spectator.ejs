@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leaderboard</title>
 
-  <!-- Auto-refresh every 5 seconds -->
+  <!-- Auto-refresh every 30 seconds -->
   <meta http-equiv="refresh" content="30">
 
   <!-- Bootstrap CSS -->
@@ -41,12 +41,16 @@
   <main class="container mt-5">
     <h1 class="text-center mb-4">Leaderboard</h1>
 
-    <!-- Links to Group Results -->
-    <!-- <div class="text-center mb-4">
-      <a href="/spectator?groupBy=skill" class="btn btn-primary">Group by Skill Level</a>
-      <a href="/spectator?groupBy=age" class="btn btn-secondary">Group by Age Range</a>
-      <a href="/spectator" class="btn btn-dark">Show All</a>
-    </div> -->
+    <div class="d-flex flex-wrap justify-content-center mb-3">
+      <span class="me-2">Filter by Skill Level:</span>
+      <a href="/spectator" class="<%= !selectedSkill ? 'btn btn-primary mx-1' : 'btn btn-outline-secondary mx-1' %>">All</a>
+      <% const skillLevels = [...new Set(drivers.map(driver => driver.skill_level))]; %>
+      <% skillLevels.forEach(skill => { %>
+        <a href="/spectator?skill=<%= encodeURIComponent(skill) %>" class="<%= selectedSkill === skill ? 'btn btn-primary mx-1' : 'btn btn-outline-secondary mx-1' %>">
+          <%= skill %>
+        </a>
+      <% }); %>
+    </div>
 
     <!-- Drivers Table -->
     <table class="table table-bordered table-striped">
@@ -72,7 +76,7 @@
           <% }) %>
         <% } else { %>
           <tr>
-            <td colspan="5" class="text-center">No drivers found</td>
+            <td colspan="5" class="text-center">No drivers found for the selected skill level.</td>
           </tr>
         <% } %>
       </tbody>

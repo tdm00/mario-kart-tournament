@@ -46,6 +46,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/admin', adminRoutes);
+app.use('/spectator', spectatorRoutes); // Register the /spectator route
 app.use('/', spectatorRoutes);
 
 // Error handling

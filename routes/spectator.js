@@ -1,29 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getDrivers } = require('../models/Driver');
-
-router.get('/', (req, res) => {
-  const groupBy = req.query.groupBy;
-
-  getDrivers((err, drivers) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Error fetching drivers');
-    }
-
-    // Sort drivers by score (highest to lowest)
-    drivers.sort((a, b) => b.total_score - a.total_score);
-
-    // Group drivers if requested
-    if (groupBy === 'skill') {
-      drivers = groupByField(drivers, 'skill_level');
-    } else if (groupBy === 'age') {
-      drivers = groupByField(drivers, 'age_range');
-    }
-
-    res.render('spectator', { drivers });
-  });
-});
+const db = require('../models/db');
 
 // Helper function to group drivers by a field
 function groupByField(drivers, field) {
@@ -43,5 +20,31 @@ function groupByField(drivers, field) {
   });
   return result;
 }
+
+// Spectator route with skill filtering
+router.get('/', (req, res) => {
+  const groupBy = req.query.groupBy;
+  const skill = req.query.skill;
+
+  db.all(`SELECT * FROM drivers ORDER BY total_score DESC`, [], (err, drivers) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error fetching drivers');
+    }
+
+    // Filter drivers by skill level if the skill query parameter is present
+    if (skill) {
+      drivers = drivers.filter(driver => driver.skill_level === skill);
+    }
+    // Group drivers if requested
+    else if (groupBy === 'skill') {
+      drivers = groupByField(drivers, 'skill_level');
+    } else if (groupBy === 'age') {
+      drivers = groupByField(drivers, 'age_range');
+    }
+
+    res.render('spectator', { drivers, selectedSkill: skill }); // Pass selectedSkill to the view
+  });
+});
 
 module.exports = router;
